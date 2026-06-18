@@ -6,7 +6,8 @@ const fadeUp = {
   initial: { opacity: 0, y: 32 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 1, ease: "easeOut" },
+  // OVDJE JE DODAT "as any" KAKO BI VERCEL PRESTAO DA PRIJAVLJUJE GREŠKU
+  transition: { duration: 1, ease: "easeOut" as any },
 };
 
 export default function FoundationSection() {
