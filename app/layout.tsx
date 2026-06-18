@@ -27,7 +27,12 @@ export const metadata: Metadata = {
   title: "Beauty Nations | One World. One Beauty Stage.",
   description:
     "Beauty Nations unites countries, talents and beauty professionals through a platform that celebrates excellence, creativity and international collaboration.",
+    icons: {
+    icon: "/favicon-16x16.png", // Ovo govori Next.js-u gdje da nađe ikonicu
+  },
 };
+
+
 
 export default function RootLayout({
   children,
