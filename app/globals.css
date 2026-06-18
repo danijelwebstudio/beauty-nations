@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #000000;
+}
+
+::selection {
+  background: #d4af37;
+  color: #000000;
+}
+
+/* Thin gold scrollbar used by the National Directors horizontal slider */
+.gold-scrollbar::-webkit-scrollbar {
+  height: 4px;
+}
+.gold-scrollbar::-webkit-scrollbar-track {
+  background: #161616;
+}
+.gold-scrollbar::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 2px;
+}
+
+/* Visible keyboard focus ring, gold-tinted, for accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #d4af37;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
