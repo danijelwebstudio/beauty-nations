@@ -21,12 +21,12 @@ export default function HeroSection() {
       </div>
 
       <div className="relative z-10 flex flex-col items-center px-6 text-center">
-        {/* POPRAVLJENO: leading-none na telefonu da se NATIONS odvoji od BEAUTY, a na desktopu ostaje md:leading-[0.85] */}
+        {/* OVDJE JE PROMJENA: leading-[1.1] da se riječi odvoje! */}
         <motion.h1
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="font-display text-6xl uppercase leading-none text-white drop-shadow-[0_0_40px_rgba(212,175,55,0.15)] sm:text-7xl md:text-[8rem] md:leading-[0.85]"
+          className="font-display text-6xl uppercase leading-[1.1] text-white drop-shadow-[0_0_40px_rgba(212,175,55,0.15)] sm:text-7xl md:text-[8rem] md:leading-[0.85]"
         >
           Beauty Nations
         </motion.h1>
@@ -40,7 +40,6 @@ export default function HeroSection() {
           One World. One Beauty Stage.
         </motion.h2>
 
-        {/* VRAĆENO NA STARO KAKO SI TRAŽIO (mt-12) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
