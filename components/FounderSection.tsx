@@ -13,22 +13,23 @@ export default function FounderSection() {
   ];
 
   return (
-    <section id="founder" className="relative bg-black py-20 md:py-28 border-t border-white/10">
-      <div className="mx-auto grid max-w-5xl items-center gap-16 px-6 md:grid-cols-2">
+    <section id="founder" className="relative border-t border-white/10 bg-black py-20 md:py-28">
+      {/* Zamijenjeno sa flex-col-reverse - Tekst gore, slika dole na mobilnom */}
+      <div className="mx-auto flex max-w-5xl flex-col-reverse items-center gap-12 px-6 md:grid md:grid-cols-2 md:gap-16">
         
-        {/* Slika */}
+        {/* Slika - smanjena za telefon (w-3/4 max-w-xs) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
-          className="relative mx-auto aspect-[3/4] w-full max-w-sm overflow-hidden rounded-sm border border-gold/30 bg-zinc-900"
+          className="relative mx-auto aspect-[3/4] w-3/4 max-w-xs overflow-hidden rounded-sm border border-gold/30 bg-zinc-900 md:w-full md:max-w-sm"
         >
           <Image 
             src="/LelaPantelić portret.webp" 
             alt="Lela Pantelić, Founder & CEO of Beauty Nations" 
             fill 
-            sizes="(max-width: 768px) 100vw, 384px"
+            sizes="(max-width: 768px) 75vw, 384px"
             className="object-cover grayscale-[20%] transition-all duration-700 hover:grayscale-0" 
           />
           <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-gold/20" />
