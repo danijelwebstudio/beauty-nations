@@ -10,7 +10,8 @@ export default function HeroSection() {
   ];
 
   return (
-    <section className="relative flex min-h-[75vh] w-full flex-col items-center justify-center overflow-hidden bg-black pb-12 pt-32 md:min-h-[85vh] md:py-20">
+    // OVDJE JE PROMJENA: pt-48 umjesto pt-32, i min-h-[80vh] da tekst ima mjesta da se spusti
+    <section className="relative flex min-h-[80vh] w-full flex-col items-center justify-center overflow-hidden bg-black pb-12 pt-48 md:min-h-[85vh] md:py-20">
       
       {/* Zlatni sjaj i animacije */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
@@ -21,7 +22,6 @@ export default function HeroSection() {
       </div>
 
       <div className="relative z-10 flex flex-col items-center px-6 text-center">
-        {/* OVDJE JE PROMJENA: leading-[1.1] da se riječi odvoje! */}
         <motion.h1
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
