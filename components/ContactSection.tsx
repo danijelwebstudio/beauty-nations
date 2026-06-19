@@ -1,121 +1,157 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { Instagram, Mail } from "lucide-react";
 
 export default function ContactSection() {
-  const [submitted, setSubmitted] = useState(false);
-
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    // TODO (Phase 2): wire this up to an API route, email service, or CRM
-    setSubmitted(true);
-  }
-
   return (
-    <section id="contact" className="relative bg-charcoal py-28 md:py-36">
+    <section id="contact" className="relative bg-black py-20 md:py-28 border-t border-white/10">
       <div className="mx-auto max-w-3xl px-6">
-        <p className="mb-3 text-center font-heading text-xs uppercase tracking-widest2 text-gold">
-          Get In Touch
-        </p>
-        <h2 className="mb-12 text-center font-display text-4xl uppercase text-white md:text-5xl">
-          Join The Stage
-        </h2>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="mb-12 text-center"
+        >
+          <h2 className="mb-4 font-display text-4xl uppercase text-white md:text-5xl">
+            BECOME A NATIONAL DIRECTOR
+          </h2>
+          <p className="font-body text-white/70">
+            Apply to exclusively represent your country on the global stage.
+          </p>
+        </motion.div>
 
-        {submitted ? (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center font-body text-white/80"
-          >
-            Thank you. Your message has been received — our team will be in
-            touch soon.
-          </motion.p>
-        ) : (
-          <motion.form
-            onSubmit={handleSubmit}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="grid gap-8 md:grid-cols-2"
-          >
-            <Field label="Full Name" name="fullName" type="text" required />
-            <Field label="Email" name="email" type="email" required />
-            <Field label="Country & Role" name="countryRole" type="text" />
-
-            <div className="md:col-span-2">
-              <label className="mb-2 block font-heading text-xs uppercase tracking-widest2 text-white/60">
-                Message
+        <motion.form
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="flex flex-col gap-6"
+          onSubmit={(e) => e.preventDefault()}
+        >
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Full Name */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="fullName" className="font-heading text-xs uppercase tracking-widest text-white/70">
+                Full Name
               </label>
-              <textarea
-                name="message"
-                rows={4}
-                required
-                className="w-full resize-none border-0 border-b border-white/20 bg-transparent py-2 font-body text-white placeholder:text-white/30 focus:border-gold focus:outline-none"
-                placeholder="Tell us about yourself..."
+              <input 
+                type="text" 
+                id="fullName" 
+                className="rounded-sm border border-white/20 bg-transparent px-4 py-3 font-body text-white transition-colors focus:border-gold focus:outline-none" 
+                required 
               />
             </div>
+            
+            {/* Country */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="country" className="font-heading text-xs uppercase tracking-widest text-white/70">
+                Country
+              </label>
+              <input 
+                type="text" 
+                id="country" 
+                className="rounded-sm border border-white/20 bg-transparent px-4 py-3 font-body text-white transition-colors focus:border-gold focus:outline-none" 
+                required 
+              />
+            </div>
+          </div>
 
-            <button
-              type="submit"
-              className="mt-4 w-full rounded-sm bg-gold px-8 py-4 font-heading text-sm uppercase tracking-widest2 text-black transition-transform hover:scale-[1.02] md:col-span-2 md:w-auto md:justify-self-start"
-            >
-              Send Message
-            </button>
-          </motion.form>
-        )}
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Instagram Profile */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="instagram" className="font-heading text-xs uppercase tracking-widest text-white/70">
+                Instagram Profile
+              </label>
+              <input 
+                type="text" 
+                id="instagram" 
+                placeholder="@username" 
+                className="rounded-sm border border-white/20 bg-transparent px-4 py-3 font-body text-white transition-colors focus:border-gold focus:outline-none" 
+                required 
+              />
+            </div>
+            
+            {/* Years of Experience */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="experience" className="font-heading text-xs uppercase tracking-widest text-white/70">
+                Years of Experience
+              </label>
+              <input 
+                type="number" 
+                id="experience" 
+                min="0" 
+                className="rounded-sm border border-white/20 bg-transparent px-4 py-3 font-body text-white transition-colors focus:border-gold focus:outline-none" 
+                required 
+              />
+            </div>
+          </div>
 
-        <div className="mt-20 flex flex-col items-center gap-4 border-t border-white/10 pt-12">
-          <p className="font-heading text-xs uppercase tracking-widest2 text-white/40">
-            Follow Beauty Nations
-          </p>
-          <div className="flex gap-6">
-            {/* TODO: Replace # with the official Instagram URL */}
-            <a
-              href="https://www.instagram.com/beautynations.world/"
-              aria-label="Instagram"
-              className="text-white/60 transition-colors hover:text-gold"
+          {/* Current Position (Dropdown) */}
+          <div className="flex flex-col gap-2">
+            <label htmlFor="position" className="font-heading text-xs uppercase tracking-widest text-white/70">
+              Current Position
+            </label>
+            <select 
+              id="position" 
+              defaultValue=""
+              className="cursor-pointer appearance-none rounded-sm border border-white/20 bg-black px-4 py-3 font-body text-white transition-colors focus:border-gold focus:outline-none" 
+              required
             >
-              <Instagram size={20} />
+              <option value="" disabled>Select your position</option>
+              <option value="Educator">Educator</option>
+              <option value="Brand Owner">Brand Owner</option>
+              <option value="Organizer">Organizer</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          {/* Why would you like to represent your country? */}
+          <div className="flex flex-col gap-2">
+            <label htmlFor="reason" className="font-heading text-xs uppercase tracking-widest text-white/70">
+              Why would you like to represent your country?
+            </label>
+            <textarea 
+              id="reason" 
+              rows={5} 
+              className="resize-none rounded-sm border border-white/20 bg-transparent px-4 py-3 font-body text-white transition-colors focus:border-gold focus:outline-none" 
+              required
+            ></textarea>
+          </div>
+
+          {/* Apply Now Button */}
+          <button 
+            type="submit" 
+            className="mt-4 rounded-sm bg-gold px-8 py-4 font-heading text-sm uppercase tracking-widest2 text-black transition-transform duration-300 hover:scale-[1.02]"
+          >
+            APPLY NOW
+          </button>
+        </motion.form>
+
+        {/* --- DODAT FOLLOW BEAUTY NATIONS DIO OVDJE --- */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mt-20 text-center"
+        >
+          <h3 className="mb-6 font-heading text-sm uppercase tracking-widest2 text-gold">
+            FOLLOW BEAUTY NATIONS
+          </h3>
+          <div className="flex justify-center gap-6 text-white/70">
+            {/* Možeš kasnije zamijeniti # sa pravim Instagram linkom */}
+            <a href="https://www.instagram.com/beautynations.world/" className="transition-all  hover:text-gold" aria-label="Instagram">
+              <Instagram size={28} strokeWidth={1.5} />
             </a>
-            <a
-              href="mailto:info@beautynations.com"
-              aria-label="Email"
-              className="text-white/60 transition-colors hover:text-gold"
-            >
-              <Mail size={20} />
+            {/* Možeš kasnije zamijeniti # sa pravim mailom */}
+            <a href="mailto:info@beautynations.world" className="transition-all hover:text-gold" aria-label="Email">
+              <Mail size={28} strokeWidth={1.5} />
             </a>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
-  );
-}
-
-function Field({
-  label,
-  name,
-  type,
-  required,
-}: {
-  label: string;
-  name: string;
-  type: string;
-  required?: boolean;
-}) {
-  return (
-    <div>
-      <label className="mb-2 block font-heading text-xs uppercase tracking-widest2 text-white/60">
-        {label}
-      </label>
-      <input
-        type={type}
-        name={name}
-        required={required}
-        className="w-full border-0 border-b border-white/20 bg-transparent py-2 font-body text-white placeholder:text-white/30 focus:border-gold focus:outline-none"
-      />
-    </div>
   );
 }

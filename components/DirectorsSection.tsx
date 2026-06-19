@@ -16,7 +16,7 @@ export default function DirectorsSection() {
   }, [query]);
 
   return (
-    <section id="directors" className="relative bg-black py-28 md:py-36">
+    <section id="directors" className="relative bg-black py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-6">
         <motion.p
           initial={{ opacity: 0 }}
@@ -31,10 +31,19 @@ export default function DirectorsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mb-10 text-center font-display text-4xl uppercase text-white md:text-5xl"
+          className="mb-6 text-center font-display text-4xl uppercase text-white md:text-5xl"
         >
-          National Directors
+          OFFICIAL NATIONAL DIRECTORS
         </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mx-auto mb-10 max-w-2xl text-center font-body text-sm text-white/70 md:text-base"
+        >
+          Each country is represented by one exclusive National Director responsible for developing Beauty Nations within their territory.
+        </motion.p>
 
         <div className="mx-auto mb-12 max-w-md">
           <div className="flex items-center gap-3 border-b border-gold/40 px-2 py-3 transition-colors focus-within:border-gold">
@@ -56,7 +65,8 @@ export default function DirectorsSection() {
             back soon.
           </p>
         ) : (
-          <div className="gold-scrollbar flex snap-x gap-5 overflow-x-auto pb-6">
+         <div className="flex snap-x gap-5 overflow-x-auto pb-6 [&::-webkit-scrollbar]:hidden md:[&::-webkit-scrollbar]:block [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-white/5 [&::-webkit-scrollbar-thumb]:bg-gold/40 hover:[&::-webkit-scrollbar-thumb]:bg-gold/80 [&::-webkit-scrollbar-thumb]:rounded-full">
+            
             {filtered.map((director) => (
               <CountryCard key={director.countryCode} {...director} />
             ))}

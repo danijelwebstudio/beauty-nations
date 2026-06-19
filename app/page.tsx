@@ -1,23 +1,24 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import FoundationSection from "@/components/FoundationSection";
+import CountryFlags from "@/components/CountryFlags";
+import WhyBeautyNationsSection from "@/components/WhyBeautyNationsSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
+import FoundationSection from "@/components/FoundationSection";
 import DirectorsSection from "@/components/DirectorsSection";
 import FounderSection from "@/components/FounderSection";
-// Uncomment once sponsor/partner logos are supplied by the client:
-// import PartnersSection from "@/components/PartnersSection";
 import ContactSection from "@/components/ContactSection";
 
 export default function Home() {
   return (
-    <main className="relative">
+    <main className="relative min-h-screen bg-black text-white">
       <Navbar />
       <HeroSection />
-      <FoundationSection />
+      <CountryFlags /> 
+      <WhyBeautyNationsSection /> 
       <HowItWorksSection />
+      <FoundationSection />
       <DirectorsSection />
       <FounderSection />
-      {/* <PartnersSection /> */}
       <ContactSection />
     </main>
   );

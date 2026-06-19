@@ -2,66 +2,55 @@
 
 import { motion } from "framer-motion";
 
-const fadeUp = {
-  initial: { opacity: 0, y: 32 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-100px" },
-  // OVDJE JE DODAT "as any" KAKO BI VERCEL PRESTAO DA PRIJAVLJUJE GREŠKU
-  transition: { duration: 1, ease: "easeOut" as any },
-};
-
 export default function FoundationSection() {
   return (
-    <section id="foundation" className="relative bg-black py-28 md:py-36">
-      <div className="mx-auto max-w-4xl px-6 text-center">
-        <motion.p
-          {...fadeUp}
-          className="mb-4 font-heading text-xs uppercase tracking-widest2 text-gold"
+    <section id="foundation" className="relative bg-black py-20 md:py-28 border-t border-white/10">
+      <div className="mx-auto max-w-6xl px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="mb-16 text-center"
         >
-          The Foundation
-        </motion.p>
+          <h2 className="mb-4 font-heading text-xs uppercase tracking-widest2 text-gold">
+            The Foundation
+          </h2>
+          <p className="font-display text-4xl uppercase text-white md:text-5xl">
+            Vision & Mission
+          </p>
+        </motion.div>
 
-        <motion.h2
-          {...fadeUp}
-          className="mb-12 font-display text-4xl uppercase text-white md:text-6xl"
-        >
-          Vision &amp; Mission
-        </motion.h2>
-
-        {/* Exact intro copy as provided by the CEO — do not paraphrase */}
-        <motion.p
-          {...fadeUp}
-          className="mx-auto max-w-2xl font-body text-lg leading-relaxed text-white/70 md:text-xl"
-        >
-          “After years of organizing international beauty competitions and
-          educating professionals across Europe, I created Beauty Nations
-          with one vision: to unite countries, talents and beauty
-          professionals through a platform that celebrates excellence,
-          creativity and international collaboration.”
-        </motion.p>
-
-        <div className="mx-auto my-16 h-px w-32 bg-gradient-to-r from-transparent via-gold to-transparent" />
-
-        <div className="grid gap-12 md:grid-cols-2 md:gap-16">
-          <motion.div {...fadeUp} className="border-t border-gold/30 pt-8">
-            <h3 className="mb-4 font-heading text-sm uppercase tracking-widest2 text-gold">
-              Vision
+        <div className="grid gap-10 md:grid-cols-2 md:gap-16">
+          {/* Vision */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="border-l border-gold/30 pl-8"
+          >
+            <h3 className="mb-4 font-heading text-2xl uppercase tracking-wide text-white">
+              Our Vision
             </h3>
-            <p className="font-body text-base leading-relaxed text-white/80 md:text-lg">
-              To become the world’s leading platform connecting beauty
-              professionals through national representation, creativity and
-              excellence.
+            <p className="font-body text-white/70 leading-relaxed">
+              To create a unified global stage where beauty transcends borders. We aim to empower representatives from every nation to showcase their unique heritage, talent, and grace on an internationally recognized platform.
             </p>
           </motion.div>
 
-          <motion.div {...fadeUp} className="border-t border-gold/30 pt-8">
-            <h3 className="mb-4 font-heading text-sm uppercase tracking-widest2 text-gold">
-              Mission
+          {/* Mission */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="border-l border-gold/30 pl-8"
+          >
+            <h3 className="mb-4 font-heading text-2xl uppercase tracking-wide text-white">
+              Our Mission
             </h3>
-            <p className="font-body text-base leading-relaxed text-white/80 md:text-lg">
-              To create opportunities, build international connections and
-              provide a stage where every nation can proudly showcase its
-              talent.
+            <p className="font-body text-white/70 leading-relaxed">
+              To provide a fair, transparent, and highly professional environment for national directors and participants. We foster international collaboration, cultural exchange, and lifelong opportunities for our global ambassadors.
             </p>
           </motion.div>
         </div>

@@ -1,31 +1,31 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Trophy, User, Globe2 } from "lucide-react";
+import { Trophy, Users, Globe2 } from "lucide-react";
 
 const PILLARS = [
   {
-    icon: Trophy,
-    title: "One Winner.",
+    icon: Users,
+    title: "NATIONAL COMPETITIONS",
     description:
-      "A single title, earned on merit, recognized across every participating nation.",
-  },
-  {
-    icon: User,
-    title: "One Representative.",
-    description:
-      "Each country sends one voice to carry its identity onto the international stage.",
+      "Each country selects its official representative through a national competition.",
   },
   {
     icon: Globe2,
-    title: "One Mission.",
-    description: "To defend the colors of their nation.",
+    title: "INTERNATIONAL FINAL",
+    description:
+      "Official representatives compete on one international stage.",
+  },
+  {
+    icon: Trophy,
+    title: "WORLD TITLE",
+    description: "One winner earns the Beauty Nations World Title.",
   },
 ];
 
 export default function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="relative bg-charcoal py-28 md:py-36">
+    <section id="how-it-works" className="relative bg-charcoal py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-6">
         <motion.p
           initial={{ opacity: 0 }}

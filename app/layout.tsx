@@ -44,7 +44,7 @@ export default function RootLayout({
       lang="en"
       className={`${anton.variable} ${oswald.variable} ${outfit.variable}`}
     >
-      <body className="bg-obsidian font-body text-white antialiased">
+      <body className="bg-black font-body text-white antialiased">
         {children}
       </body>
     </html>

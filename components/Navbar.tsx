@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 
 const NAV_LINKS = [
-  { label: "The Foundation", href: "#foundation" },
-  { label: "How It Works", href: "#how-it-works" },
+  { label: "Why Beauty Nations", href: "#why-beauty-nations" },
+  { label: "The Structure", href: "#how-it-works" },
+  { label: "Vision & Mission", href: "#foundation" },
   { label: "National Directors", href: "#directors" },
   { label: "Founder", href: "#founder" },
   { label: "Contact", href: "#contact" },
@@ -35,19 +35,14 @@ export default function Navbar() {
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-10">
         
-        {/* LOGO SEKCIJA */}
         <a href="#" className="relative z-50 flex items-center transition-opacity hover:opacity-80">
-          <Image 
+          <img 
             src="/BeautyNationLogo.webp" 
             alt="Beauty Nations Logo" 
-            width={160} 
-            height={50} 
-            className="object-contain invert grayscale contrast-200 mix-blend-screen"
-            priority
+            className="h-[120px] w-auto object-contain invert"
           />
         </a>
 
-        {/* DESKTOP MENI (SKRIVEN NA MOBILNOM) */}
         <ul className="hidden items-center gap-8 md:flex">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
@@ -61,7 +56,6 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* DESKTOP DUGME */}
         <a
           href="#contact"
           className="hidden rounded-sm border border-gold px-5 py-2 font-heading text-xs uppercase tracking-widest2 text-gold transition-all hover:bg-gold hover:text-black md:inline-block"
@@ -69,7 +63,6 @@ export default function Navbar() {
           Join Us
         </a>
 
-        {/* MOBILNO DUGME (HAMBURGER / X ANIMACIJA) */}
         <button 
           className="z-50 p-2 focus:outline-none md:hidden" 
           aria-label="Toggle menu"
@@ -81,7 +74,6 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* MOBILNI PADAJUĆI MENI */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -103,15 +95,6 @@ export default function Navbar() {
                   </a>
                 </li>
               ))}
-              <li className="mt-4 border-t border-white/10 pt-6">
-                <a
-                  href="#contact"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="inline-block w-full rounded-sm border border-gold px-6 py-4 text-center font-heading text-sm uppercase tracking-widest2 text-gold transition-all hover:bg-gold hover:text-black"
-                >
-                  Join Us
-                </a>
-              </li>
             </ul>
           </motion.div>
         )}
