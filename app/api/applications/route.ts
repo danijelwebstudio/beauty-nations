@@ -35,13 +35,51 @@ function failure(message: string, status: number) {
   return NextResponse.json({ message }, { status, headers: { "Cache-Control": "no-store" } });
 }
 
+type TurnstileVerification = {
+  success?: boolean;
+  action?: string;
+  hostname?: string;
+};
+
+/**
+ * Verify once on our server before sending any data to the mail provider.
+ * Turnstile tokens cannot be verified twice.
+ */
+async function verifyTurnstile(token: string, expectedAction: string): Promise<"valid" | "invalid" | "unavailable"> {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) {
+    console.error("Beauty Nations forms: TURNSTILE_SECRET_KEY is missing");
+    return "unavailable";
+  }
+
+  try {
+    const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ secret, response: token }),
+      cache: "no-store",
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!response.ok) return "unavailable";
+
+    const result: TurnstileVerification = await response.json();
+    if (!result.success || result.action !== expectedAction || !result.hostname) {
+      return "invalid";
+    }
+    return "valid";
+  } catch (error) {
+    console.error("Beauty Nations forms: Turnstile service unavailable", error instanceof Error ? error.name : "Unknown error");
+    return "unavailable";
+  }
+}
+
 /**
  * Mail providers:
  * - formspree: works with a recipient's verified existing Gmail, without a custom domain.
  * - resend: use test inbox with onboarding@resend.dev, or verified sender domain for Lela.
  * Neither option will pretend that an unconfigured form has succeeded.
  */
-async function deliver(subject: string, data: Record<string, string>, type: string, turnstileToken: string) {
+async function deliver(subject: string, data: Record<string, string>, type: string) {
   const provider = (process.env.FORMS_PROVIDER || "resend").toLowerCase();
   const submitted = new Date().toISOString();
   const lines = [
@@ -67,7 +105,6 @@ async function deliver(subject: string, data: Record<string, string>, type: stri
       form_type: LABELS[type],
       submitted_at: submitted,
       message: lines.join("\n"),
-      "cf-turnstile-response": turnstileToken,
     });
     // Include structured fields for viewing in the Formspree submissions dashboard.
     for (const [key, value] of Object.entries(data)) {
@@ -86,19 +123,6 @@ async function deliver(subject: string, data: Record<string, string>, type: stri
   }
 
   if (provider === "resend") {
-    // For Resend, unlike Formspree, our server must verify Turnstile itself.
-    const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
-    if (!turnstileSecret) return { ok: false, status: 503 };
-    const verification = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ secret: turnstileSecret, response: turnstileToken }),
-      cache: "no-store",
-      signal: AbortSignal.timeout(12000),
-    });
-    if (!verification.ok) return { ok: false, status: 502 };
-    const verificationResult: { success?: boolean } = await verification.json();
-    if (!verificationResult.success) return { ok: false, status: 403 };
     const apiKey = process.env.RESEND_API_KEY;
     const recipient = process.env.APPLICATIONS_TO_EMAIL;
     const sender = process.env.RESEND_FROM_EMAIL;
@@ -155,8 +179,12 @@ export async function POST(request: Request) {
   if (type === "coordinator" && !["Educator", "Brand Owner", "Organizer", "Other"].includes(data.position)) return failure("Please select a current position.", 400);
 
   const subject = `Beauty Nations — ${LABELS[type]}`;
+  const verification = await verifyTurnstile(turnstileToken, type);
+  if (verification === "invalid") return failure("Security verification failed or expired. Please try again.", 403);
+  if (verification === "unavailable") return failure("Security verification is temporarily unavailable. Please try again later.", 503);
+
   try {
-    const result = await deliver(subject, data, type, turnstileToken);
+    const result = await deliver(subject, data, type);
     if (!result.ok) {
       return failure(
         result.status === 503
