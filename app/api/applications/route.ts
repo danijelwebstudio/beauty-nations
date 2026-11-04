@@ -41,7 +41,7 @@ function failure(message: string, status: number) {
  * - resend: use test inbox with onboarding@resend.dev, or verified sender domain for Lela.
  * Neither option will pretend that an unconfigured form has succeeded.
  */
-async function deliver(subject: string, data: Record<string, string>, type: string) {
+async function deliver(subject: string, data: Record<string, string>, type: string, turnstileToken: string) {
   const provider = (process.env.FORMS_PROVIDER || "resend").toLowerCase();
   const submitted = new Date().toISOString();
   const lines = [
@@ -67,6 +67,7 @@ async function deliver(subject: string, data: Record<string, string>, type: stri
       form_type: LABELS[type],
       submitted_at: submitted,
       message: lines.join("\n"),
+      "cf-turnstile-response": turnstileToken,
     });
     // Include structured fields for viewing in the Formspree submissions dashboard.
     for (const [key, value] of Object.entries(data)) {
@@ -85,6 +86,19 @@ async function deliver(subject: string, data: Record<string, string>, type: stri
   }
 
   if (provider === "resend") {
+    // For Resend, unlike Formspree, our server must verify Turnstile itself.
+    const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+    if (!turnstileSecret) return { ok: false, status: 503 };
+    const verification = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ secret: turnstileSecret, response: turnstileToken }),
+      cache: "no-store",
+      signal: AbortSignal.timeout(12000),
+    });
+    if (!verification.ok) return { ok: false, status: 502 };
+    const verificationResult: { success?: boolean } = await verification.json();
+    if (!verificationResult.success) return { ok: false, status: 403 };
     const apiKey = process.env.RESEND_API_KEY;
     const recipient = process.env.APPLICATIONS_TO_EMAIL;
     const sender = process.env.RESEND_FROM_EMAIL;
@@ -126,6 +140,8 @@ export async function POST(request: Request) {
   }
 
   if (safeText(incoming.website_check)) return failure("Unable to submit this request.", 400);
+  const turnstileToken = safeText(incoming.turnstileToken, 2048);
+  if (!turnstileToken) return failure("Please complete the security verification.", 400);
   const type = safeText(incoming.type, 30);
   if (!Object.hasOwn(REQUIRED, type)) return failure("Unknown form type.", 400);
 
@@ -140,15 +156,17 @@ export async function POST(request: Request) {
 
   const subject = `Beauty Nations — ${LABELS[type]}`;
   try {
-    const result = await deliver(subject, data, type);
+    const result = await deliver(subject, data, type, turnstileToken);
     if (!result.ok) {
       return failure(
         result.status === 503
           ? "Forms are not configured yet. Please contact the Beauty Nations team by email."
           : result.status === 429
             ? "Too many submissions. Please wait a few minutes and try again."
-            : "We couldn't send your request right now. Please try again later.",
-        result.status === 503 ? 503 : result.status === 429 ? 429 : 502,
+            : result.status === 403 || result.status === 400
+              ? "Security verification failed or expired. Please try again."
+              : "We couldn't send your request right now. Please try again later.",
+        result.status === 503 ? 503 : result.status === 429 ? 429 : result.status === 403 || result.status === 400 ? 403 : 502,
       );
     }
     return NextResponse.json({
