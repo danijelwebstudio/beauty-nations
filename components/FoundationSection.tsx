@@ -4,14 +4,14 @@ import { motion } from "framer-motion";
 
 export default function FoundationSection() {
   return (
-    <section id="foundation" className="relative bg-black py-20 md:py-28 border-t border-white/10">
+    <section id="foundation" className="relative bg-black py-14 md:py-24 border-t border-white/10">
       <div className="mx-auto max-w-6xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mb-16 text-center"
+          className="mb-9 text-center"
         >
           <h2 className="mb-4 font-heading text-xs uppercase tracking-widest2 text-gold">
             The Foundation
@@ -21,7 +21,7 @@ export default function FoundationSection() {
           </p>
         </motion.div>
 
-        <div className="grid gap-10 md:grid-cols-2 md:gap-16">
+        <div className="grid gap-7 md:grid-cols-2 md:gap-12">
           {/* Vision */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -34,7 +34,7 @@ export default function FoundationSection() {
               Our Vision
             </h3>
             <p className="font-body text-white/70 leading-relaxed">
-              To create a unified global stage where beauty transcends borders. We aim to empower representatives from every nation to showcase their unique heritage, talent, and grace on an internationally recognized platform.
+              To celebrate creativity and technical skill in nail artistry, makeup, costume and photography, inspired by cultural heritage and the 2027 theme ROOTS.
             </p>
           </motion.div>
 
@@ -50,7 +50,7 @@ export default function FoundationSection() {
               Our Mission
             </h3>
             <p className="font-body text-white/70 leading-relaxed">
-              To provide a fair, transparent, and highly professional environment for national directors and participants. We foster international collaboration, cultural exchange, and lifelong opportunities for our global ambassadors.
+              To connect national competitors and creative professionals through one shared theme, fair international judging and meaningful cross-border collaboration.
             </p>
           </motion.div>
         </div>

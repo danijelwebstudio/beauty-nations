@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
 import { Anton, Oswald, Outfit } from "next/font/google";
 import "./globals.css";
+import { siteUrl } from "@/lib/site-url";
+import { GoogleAnalytics } from '@next/third-parties/google';
 
-// Display face: heavy, condensed, uppercase — used sparingly for hero/section headlines
+// Konfiguracija fontova
 const anton = Anton({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-anton",
 });
 
-// Heading face: condensed, bold — used for eyebrows, nav, labels, pillar titles
 const oswald = Oswald({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-oswald",
 });
 
-// Body face: clean, highly readable
 const outfit = Outfit({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
@@ -24,15 +24,14 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Beauty Nations | One World. One Beauty Stage.",
   description:
-    "Beauty Nations unites countries, talents and beauty professionals through a platform that celebrates excellence, creativity and international collaboration.",
-    icons: {
-    icon: "/favicon-16x16.png", // Ovo govori Next.js-u gdje da nađe ikonicu
+    "An international competition combining nail artistry, makeup, costume and photography through one creative theme. Grand Final: 18 September 2027, Zagreb.",
+  icons: {
+    icon: "/favicon-16x16.png",
   },
 };
-
-
 
 export default function RootLayout({
   children,
@@ -46,6 +45,9 @@ export default function RootLayout({
     >
       <body className="bg-black font-body text-white antialiased">
         {children}
+        {process.env.NEXT_PUBLIC_GA_ID ? (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        ) : null}
       </body>
     </html>
   );

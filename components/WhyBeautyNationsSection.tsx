@@ -23,7 +23,7 @@ const REASONS = [
 
 export default function WhyBeautyNationsSection() {
   return (
-    <section id="why-beauty-nations" className="relative bg-charcoal py-20 md:py-28">
+    <section id="why-beauty-nations" className="relative bg-charcoal py-14 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
         <motion.p
           initial={{ opacity: 0 }}
@@ -38,12 +38,12 @@ export default function WhyBeautyNationsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mb-16 text-center font-display text-4xl uppercase text-white md:text-5xl"
+          className="mb-9 text-center font-display text-4xl uppercase text-white md:text-5xl"
         >
           Why Beauty Nations?
         </motion.h2>
 
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-3">
           {REASONS.map((reason, i) => {
             const Icon = reason.icon;
             return (
@@ -53,7 +53,7 @@ export default function WhyBeautyNationsSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: i * 0.15 }}
-                className="group flex flex-col items-center rounded-sm border border-gold/10 bg-black/30 px-8 py-10 text-center transition-colors hover:border-gold/30"
+                className="group flex flex-col items-center rounded-sm border border-gold/10 bg-black/30 px-6 py-6 md:px-8 md:py-10 text-center transition-colors hover:border-gold/30"
               >
                 <div className="mb-5 text-gold/70 transition-colors group-hover:text-gold">
                   <Icon size={32} strokeWidth={1.5} />

@@ -13,9 +13,9 @@ export default function FounderSection() {
   ];
 
   return (
-    <section id="founder" className="relative border-t border-white/10 bg-black py-20 md:py-28">
+    <section id="founder" className="relative border-t border-white/10 bg-black py-14 md:py-24">
       {/* Zamijenjeno sa flex-col-reverse - Tekst gore, slika dole na mobilnom */}
-      <div className="mx-auto flex max-w-5xl flex-col-reverse items-center gap-12 px-6 md:grid md:grid-cols-2 md:gap-16">
+      <div className="mx-auto flex max-w-5xl flex-col-reverse items-center gap-8 px-5 md:px-6 md:grid md:grid-cols-2 md:items-center md:gap-16">
         
         {/* Slika - smanjena za telefon (w-3/4 max-w-xs) */}
         <motion.div
@@ -23,14 +23,14 @@ export default function FounderSection() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
-          className="relative mx-auto aspect-[3/4] w-3/4 max-w-xs overflow-hidden rounded-sm border border-gold/30 bg-zinc-900 md:w-full md:max-w-sm"
+          className="relative mx-auto aspect-square w-4/5 max-w-sm overflow-hidden rounded-sm border border-gold/30 bg-zinc-900 md:w-full md:max-w-[420px]"
         >
           <Image 
-            src="/LelaPantelić portret.webp" 
+            src="/founder/LelaSlika2.png"
             alt="Lela Pantelić, Founder & CEO of Beauty Nations" 
             fill 
-            sizes="(max-width: 768px) 75vw, 384px"
-            className="object-cover grayscale-[20%] transition-all duration-700 hover:grayscale-0" 
+            sizes="(max-width: 768px) 80vw, 420px"
+            className="object-contain grayscale contrast-[1.05]"
           />
           <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-gold/20" />
         </motion.div>

@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const NAV_LINKS = [
-  { label: "Why Beauty Nations", href: "#why-beauty-nations" },
+  { label: "Compete", href: "#compete" },
+  { label: "Attend Final", href: "#grand-final" },
+  { label: "Partners", href: "#partner-enquiry" },
   { label: "The Structure", href: "#how-it-works" },
-  { label: "Vision & Mission", href: "#foundation" },
-  { label: "National Directors", href: "#directors" },
+  { label: "National Coordinators", href: "#directors" },
+  { label: "Become a Coordinator", href: "#coordinator-application" },
   { label: "Founder", href: "#founder" },
-  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
@@ -18,83 +19,33 @@ export default function Navbar() {
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
-    window.addEventListener("scroll", onScroll);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <motion.header
-      initial={{ y: -40, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className={`fixed left-0 top-0 z-50 w-full transition-colors duration-500 ${
-        scrolled || isMobileMenuOpen
-          ? "border-b border-gold/10 bg-black/90 backdrop-blur-md"
-          : "border-b border-transparent bg-transparent"
-      }`}
-    >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-10">
-        
-        <a href="#" className="relative z-50 flex items-center transition-opacity hover:opacity-80">
-          <img 
-            src="/BeautyNationLogo.webp" 
-            alt="Beauty Nations Logo" 
-            className="h-[120px] w-auto object-contain invert"
-          />
+    <motion.header initial={{ y: -30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5 }} className={`fixed inset-x-0 top-0 z-50 w-full transition-colors duration-300 ${scrolled || isMobileMenuOpen ? "border-b border-gold/20 bg-black/95 backdrop-blur-md" : "bg-black/75 backdrop-blur-sm"}`}>
+      <nav className="mx-auto flex h-[68px] max-w-7xl items-center justify-between px-5 md:h-[88px] md:px-8" aria-label="Main navigation">
+        <a href="#top" className="relative z-50 flex shrink-0 items-center transition-opacity hover:opacity-80" onClick={() => setIsMobileMenuOpen(false)}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/BeautyNationLogo.webp" alt="Beauty Nations" className="h-[58px] w-auto object-contain invert md:h-[78px]" />
         </a>
-
-        <ul className="hidden items-center gap-8 md:flex">
-          {NAV_LINKS.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="font-heading text-sm uppercase tracking-wide text-white/80 transition-colors hover:text-gold"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
+        <ul className="hidden items-center gap-4 lg:flex xl:gap-6">
+          {NAV_LINKS.map((link) => <li key={link.href}><a href={link.href} className="font-heading text-[11px] uppercase tracking-wide text-white/80 transition-colors hover:text-gold xl:text-xs">{link.label}</a></li>)}
         </ul>
-
-        <a
-          href="#contact"
-          className="hidden rounded-sm border border-gold px-5 py-2 font-heading text-xs uppercase tracking-widest2 text-gold transition-all hover:bg-gold hover:text-black md:inline-block"
-        >
-          Join Us
-        </a>
-
-        <button 
-          className="z-50 p-2 focus:outline-none md:hidden" 
-          aria-label="Toggle menu"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          <span className={`mb-1.5 block h-px bg-gold transition-transform duration-300 ${isMobileMenuOpen ? "w-6 translate-y-2.5 rotate-45" : "w-6"}`} />
-          <span className={`mb-1.5 block h-px w-6 bg-gold transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-0" : "opacity-100"}`} />
-          <span className={`block h-px bg-gold transition-transform duration-300 ${isMobileMenuOpen ? "w-6 -translate-y-1 -rotate-45" : "w-4"}`} />
+        <a href="#coordinator-application" className="hidden rounded-sm border border-gold px-3 py-2 font-heading text-[11px] uppercase tracking-wide text-gold hover:bg-gold hover:text-black md:block lg:hidden">Coordinator application</a>
+        <button type="button" aria-expanded={isMobileMenuOpen} aria-controls="mobile-main-menu" aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"} className="z-50 flex h-11 w-11 flex-col items-center justify-center gap-[6px] border border-white/20 lg:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          <span className={`block h-[2px] w-5 bg-gold transition-transform ${isMobileMenuOpen ? "translate-y-[8px] rotate-45" : ""}`} />
+          <span className={`block h-[2px] w-5 bg-gold ${isMobileMenuOpen ? "opacity-0" : ""}`} />
+          <span className={`block h-[2px] w-5 bg-gold transition-transform ${isMobileMenuOpen ? "-translate-y-[8px] -rotate-45" : ""}`} />
         </button>
       </nav>
-
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="absolute left-0 top-full w-full border-b border-gold/10 bg-black/95 px-6 py-8 shadow-2xl backdrop-blur-xl md:hidden"
-          >
-            <ul className="flex flex-col gap-6">
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block font-heading text-xl uppercase tracking-wide text-white/90 transition-colors hover:text-gold"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+          <motion.div id="mobile-main-menu" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.18 }} className="max-h-[calc(100dvh-68px)] overflow-y-auto border-b border-gold/20 bg-black/95 px-6 py-4 shadow-2xl lg:hidden">
+            <ul className="flex flex-col">
+              {NAV_LINKS.map((link) => <li key={link.href}><a href={link.href} onClick={() => setIsMobileMenuOpen(false)} className="block border-b border-white/10 py-3 font-heading text-sm uppercase tracking-widest text-white/90 hover:text-gold">{link.label}</a></li>)}
             </ul>
           </motion.div>
         )}

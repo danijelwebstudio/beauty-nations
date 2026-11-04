@@ -1,156 +1,33 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { Instagram, Mail } from "lucide-react";
+import LeadForm from "./LeadForm";
 
 export default function ContactSection() {
+  const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "info.lelapantelic@gmail.com";
   return (
-    <section id="contact" className="relative bg-black py-20 md:py-28 border-t border-white/10">
-      <div className="mx-auto max-w-3xl px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mb-12 text-center"
-        >
-          <h2 className="mb-4 font-display text-4xl uppercase text-white md:text-5xl">
-            BECOME A NATIONAL DIRECTOR
-          </h2>
-          <p className="font-body text-white/70">
-            Apply to exclusively represent your country on the global stage.
-          </p>
-        </motion.div>
-
-        <motion.form
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex flex-col gap-6"
-          onSubmit={(e) => e.preventDefault()}
-        >
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* Full Name */}
-            <div className="flex flex-col gap-2">
-              <label htmlFor="fullName" className="font-heading text-xs uppercase tracking-widest text-white/70">
-                Full Name
-              </label>
-              <input 
-                type="text" 
-                id="fullName" 
-                className="rounded-sm border border-white/20 bg-transparent px-4 py-3 font-body text-white transition-colors focus:border-gold focus:outline-none" 
-                required 
-              />
-            </div>
-            
-            {/* Country */}
-            <div className="flex flex-col gap-2">
-              <label htmlFor="country" className="font-heading text-xs uppercase tracking-widest text-white/70">
-                Country
-              </label>
-              <input 
-                type="text" 
-                id="country" 
-                className="rounded-sm border border-white/20 bg-transparent px-4 py-3 font-body text-white transition-colors focus:border-gold focus:outline-none" 
-                required 
-              />
-            </div>
+    <section id="coordinator-application" className="scroll-mt-20 border-t border-white/10 bg-black py-14 md:py-24">
+      <div className="mx-auto max-w-3xl px-5 md:px-6">
+        <p className="mb-3 text-center font-heading text-xs uppercase tracking-widest2 text-gold">Represent your country</p>
+        <h2 className="text-center font-display text-4xl uppercase text-white md:text-5xl">BECOME A NATIONAL COORDINATOR</h2>
+        <p className="mx-auto mt-4 mb-8 max-w-2xl text-center font-body text-sm text-white/70 md:text-base">Apply to represent your country as a Beauty Nations National Coordinator.</p>
+        <div className="border border-white/10 p-5 sm:p-8">
+          <LeadForm kind="coordinator" buttonText="APPLY AS NATIONAL COORDINATOR" fields={[
+            { name: "name", label: "Full name", required: true },
+            { name: "email", label: "Email", type: "email", required: true },
+            { name: "country", label: "Country", required: true },
+            { name: "instagram", label: "Instagram profile", placeholder: "@username", required: true },
+            { name: "experience", label: "Years of experience", type: "number", required: true },
+            { name: "position", label: "Current position", type: "select", required: true, options: ["Educator", "Brand Owner", "Organizer", "Other"] },
+            { name: "reason", label: "Why would you like to become a national coordinator?", type: "textarea", required: true, maxLength: 1500 },
+          ]} />
+        </div>
+        <div id="contact" className="mt-12 text-center">
+          <p className="mb-4 font-heading text-xs uppercase tracking-widest2 text-gold">Follow Beauty Nations</p>
+          <div className="flex items-center justify-center gap-8 text-white/70">
+            <a href="https://www.instagram.com/beautynations.world/" target="_blank" rel="noopener noreferrer" className="hover:text-gold" aria-label="Beauty Nations Instagram"><Instagram size={25} /></a>
+            {contactEmail ? <a href={`mailto:${contactEmail}`} className="hover:text-gold" aria-label="Beauty Nations email"><Mail size={25} /></a> : null}
           </div>
-
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* Instagram Profile */}
-            <div className="flex flex-col gap-2">
-              <label htmlFor="instagram" className="font-heading text-xs uppercase tracking-widest text-white/70">
-                Instagram Profile
-              </label>
-              <input 
-                type="text" 
-                id="instagram" 
-                placeholder="@username" 
-                className="rounded-sm border border-white/20 bg-transparent px-4 py-3 font-body text-white transition-colors focus:border-gold focus:outline-none" 
-                required 
-              />
-            </div>
-            
-            {/* Years of Experience */}
-            <div className="flex flex-col gap-2">
-              <label htmlFor="experience" className="font-heading text-xs uppercase tracking-widest text-white/70">
-                Years of Experience
-              </label>
-              <input 
-                type="number" 
-                id="experience" 
-                min="0" 
-                className="rounded-sm border border-white/20 bg-transparent px-4 py-3 font-body text-white transition-colors focus:border-gold focus:outline-none" 
-                required 
-              />
-            </div>
-          </div>
-
-          {/* Current Position (Dropdown) */}
-          <div className="flex flex-col gap-2">
-            <label htmlFor="position" className="font-heading text-xs uppercase tracking-widest text-white/70">
-              Current Position
-            </label>
-            <select 
-              id="position" 
-              defaultValue=""
-              className="cursor-pointer appearance-none rounded-sm border border-white/20 bg-black px-4 py-3 font-body text-white transition-colors focus:border-gold focus:outline-none" 
-              required
-            >
-              <option value="" disabled>Select your position</option>
-              <option value="Educator">Educator</option>
-              <option value="Brand Owner">Brand Owner</option>
-              <option value="Organizer">Organizer</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          {/* Why would you like to represent your country? */}
-          <div className="flex flex-col gap-2">
-            <label htmlFor="reason" className="font-heading text-xs uppercase tracking-widest text-white/70">
-              Why would you like to represent your country?
-            </label>
-            <textarea 
-              id="reason" 
-              rows={5} 
-              className="resize-none rounded-sm border border-white/20 bg-transparent px-4 py-3 font-body text-white transition-colors focus:border-gold focus:outline-none" 
-              required
-            ></textarea>
-          </div>
-
-          {/* Apply Now Button */}
-          <button 
-            type="submit" 
-            className="mt-4 rounded-sm bg-gold px-8 py-4 font-heading text-sm uppercase tracking-widest2 text-black transition-transform duration-300 hover:scale-[1.02]"
-          >
-            APPLY NOW
-          </button>
-        </motion.form>
-
-        {/* --- DODAT FOLLOW BEAUTY NATIONS DIO OVDJE --- */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-20 text-center"
-        >
-          <h3 className="mb-6 font-heading text-sm uppercase tracking-widest2 text-gold">
-            FOLLOW BEAUTY NATIONS
-          </h3>
-          <div className="flex justify-center gap-6 text-white/70">
-            {/* Možeš kasnije zamijeniti # sa pravim Instagram linkom */}
-            <a href="https://www.instagram.com/beautynations.world/" className="transition-all  hover:text-gold" aria-label="Instagram">
-              <Instagram size={28} strokeWidth={1.5} />
-            </a>
-            {/* Možeš kasnije zamijeniti # sa pravim mailom */}
-            <a href="mailto:info@beautynations.world" className="transition-all hover:text-gold" aria-label="Email">
-              <Mail size={28} strokeWidth={1.5} />
-            </a>
-          </div>
-        </motion.div>
+          <p className="mt-3 font-body text-xs text-white/50">For all official enquiries: Lela Pantelić, Founder of Beauty Nations.</p>
+        </div>
       </div>
     </section>
   );
