@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import TurnstileWidget, { turnstileSiteKey } from "./TurnstileWidget";
 
 type LeadKind = "tickets" | "partner" | "coordinator" | "competitor";
 type Field = {
@@ -27,10 +28,17 @@ const control =
 export default function LeadForm({ kind, fields, buttonText, defaults = {}, consentText }: Props) {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [feedback, setFeedback] = useState("");
+  const [verificationToken, setVerificationToken] = useState("");
+  const [verificationReset, setVerificationReset] = useState(0);
 
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (status === "sending") return;
+    if (!turnstileSiteKey || !verificationToken) {
+      setStatus("error");
+      setFeedback("Please complete the security verification before submitting.");
+      return;
+    }
     const form = e.currentTarget;
     const raw = Object.fromEntries(new FormData(form).entries());
     setStatus("sending");
@@ -39,7 +47,7 @@ export default function LeadForm({ kind, fields, buttonText, defaults = {}, cons
       const response = await fetch("/api/applications", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type: kind, ...defaults, ...raw, consent: raw.consent === "on" }),
+        body: JSON.stringify({ type: kind, ...defaults, ...raw, consent: raw.consent === "on", turnstileToken: verificationToken }),
       });
       const data: { message?: string } = await response.json().catch(() => ({}));
       if (!response.ok) {
@@ -51,6 +59,10 @@ export default function LeadForm({ kind, fields, buttonText, defaults = {}, cons
     } catch (error) {
       setStatus("error");
       setFeedback(error instanceof Error ? error.message : "Something went wrong. Please try again.");
+    } finally {
+      // A Turnstile token expires or is consumed after a single submission attempt.
+      setVerificationToken("");
+      setVerificationReset((current) => current + 1);
     }
   }
 
@@ -89,7 +101,8 @@ export default function LeadForm({ kind, fields, buttonText, defaults = {}, cons
           <span>{consentText}</span>
         </label>
       ) : null}
-      <button disabled={status === "sending"} type="submit" className="mt-2 w-full rounded-sm bg-gold px-6 py-3.5 font-heading text-sm uppercase tracking-[0.12em] text-black transition-opacity hover:opacity-90 disabled:cursor-wait disabled:opacity-60 sm:w-auto sm:self-start">
+      <TurnstileWidget action={kind} onTokenChange={setVerificationToken} resetKey={verificationReset} />
+      <button disabled={status === "sending" || !verificationToken} type="submit" className="mt-2 w-full rounded-sm bg-gold px-6 py-3.5 font-heading text-sm uppercase tracking-[0.12em] text-black transition-opacity hover:opacity-90 disabled:cursor-wait disabled:opacity-60 sm:w-auto sm:self-start">
         {status === "sending" ? "SENDING..." : buttonText}
       </button>
       {feedback && (
