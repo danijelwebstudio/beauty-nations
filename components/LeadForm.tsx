@@ -101,10 +101,10 @@ export default function LeadForm({ kind, fields, buttonText, defaults = {}, cons
           <span>{consentText}</span>
         </label>
       ) : null}
-      <TurnstileWidget action={kind} onTokenChange={setVerificationToken} resetKey={verificationReset} />
-      <button disabled={status === "sending" || !verificationToken} type="submit" className="mt-2 w-full rounded-sm bg-gold px-6 py-3.5 font-heading text-sm uppercase tracking-[0.12em] text-black transition-opacity hover:opacity-90 disabled:cursor-wait disabled:opacity-60 sm:w-auto sm:self-start">
+      {status !== "success" && <TurnstileWidget action={kind} onTokenChange={setVerificationToken} resetKey={verificationReset} />}
+      {status !== "success" && <button disabled={status === "sending" || !verificationToken} type="submit" className="mt-2 w-full rounded-sm bg-gold px-6 py-3.5 font-heading text-sm uppercase tracking-[0.12em] text-black transition-opacity hover:opacity-90 disabled:cursor-wait disabled:opacity-60 sm:w-auto sm:self-start">
         {status === "sending" ? "SENDING..." : buttonText}
-      </button>
+      </button>}
       {feedback && (
         <p role={status === "error" ? "alert" : "status"} aria-live="polite" className={`rounded-sm border px-4 py-3 font-body text-sm ${status === "success" ? "border-gold/40 text-white" : "border-red-400/40 text-red-200"}`}>
           {feedback}

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { directors } from "@/data/directors";
+import { checkRateLimit, opaqueId } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -149,6 +150,14 @@ async function deliver(subject: string, data: Record<string, string>, type: stri
 }
 
 export async function POST(request: Request) {
+  // Supplemental, best-effort limit. Cloudflare WAF will enforce the edge limit in production.
+  // These proxy headers must be overwritten by a trusted proxy, never trusted from direct client traffic.
+  const clientIp = (request.headers.get("x-real-ip") || request.headers.get("cf-connecting-ip") || "").trim();
+  if (clientIp) {
+    const ipLimit = checkRateLimit(`ip:${opaqueId(clientIp)}`, 5, 10 * 60 * 1000);
+    if (!ipLimit.allowed) return failure("Too many requests. Please try again later.", 429);
+  }
+
   const size = Number(request.headers.get("content-length") || 0);
   if (size > 12_000) return failure("Request is too large.", 413);
 
@@ -182,6 +191,9 @@ export async function POST(request: Request) {
   const verification = await verifyTurnstile(turnstileToken, type);
   if (verification === "invalid") return failure("Security verification failed or expired. Please try again.", 403);
   if (verification === "unavailable") return failure("Security verification is temporarily unavailable. Please try again later.", 503);
+
+  const emailLimit = checkRateLimit(`email:${opaqueId(data.email)}`, 3, 60 * 60 * 1000);
+  if (!emailLimit.allowed) return failure("Too many submissions for this email. Please try again later.", 429);
 
   try {
     const result = await deliver(subject, data, type);
