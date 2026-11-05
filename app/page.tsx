@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { siteUrl } from "@/lib/site-url";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import CountryFlags from "@/components/CountryFlags";
@@ -12,10 +14,12 @@ import FounderSection from "@/components/FounderSection";
 import ContactSection from "@/components/ContactSection";
 
 
-export const metadata = {
-  title: "Beauty Nations | One World, One Beauty Stage",
+export const metadata: Metadata = {
+  title: "Beauty Nations | One World. One Beauty Stage.",
   description: "An international competition combining nail artistry, makeup, costume and photography through one creative theme. Grand Final: 18 September 2027, Zagreb.",
-}
+  // The canonical belongs to the home page; legal pages must not inherit it.
+  alternates: { canonical: siteUrl },
+};
 
 export default function Home() {
   return (

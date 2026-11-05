@@ -2,12 +2,8 @@ import type { MetadataRoute } from "next";
 import { siteUrl } from "@/lib/site-url";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: siteUrl,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 1,
-    },
-  ];
+  // Preview deployments and unapproved legal drafts should not appear in the sitemap.
+  if (process.env.VERCEL_ENV === "preview") return [];
+
+  return [{ url: siteUrl }];
 }
