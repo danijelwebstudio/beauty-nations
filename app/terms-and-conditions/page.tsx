@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import LegalLayout from "@/components/LegalLayout";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions | Beauty Nations — Draft",
-  robots: { index: false, follow: false },
+  title: "Terms & Conditions | Beauty Nations",
 };
 
 export default function TermsPage() {
@@ -11,18 +10,18 @@ export default function TermsPage() {
     <LegalLayout title="Terms & Conditions">
       <section>
         <h2 className="font-heading text-xl uppercase text-white">1. About this website</h2>
-        <p>This website introduces Beauty Nations and provides ways to contact the organisers about competitions, national coordination, partnerships and Grand Final ticket-sale notifications.</p>
-        <p className="text-amber-100">[TO CONFIRM: identity, address and legal status of the website operator. Do not describe an unregistered company as a registered entity.]</p>
+        <p>The website https://beauty-nations.com introduces Beauty Nations, an international beauty competition initiative led by Lela Pantelić in Lausanne, Switzerland. Beauty Nations is not currently a registered company. Lela Pantelić operates the website and can be contacted at <a className="text-gold underline" href="mailto:info.lelapantelic@gmail.com">info.lelapantelic@gmail.com</a>.</p>
+        <p>The website provides ways to contact the organiser about competitions, national coordination, partnerships and Grand Final ticket-sale notifications. It does not sell tickets or accept payments. These terms cover use of the website and its enquiry and notification forms.</p>
       </section>
       <section>
         <h2 className="font-heading text-xl uppercase text-white">2. Enquiries and expressions of interest</h2>
         <p>Submitting a competitor, national coordinator or partnership enquiry does not automatically mean acceptance, appointment, sponsorship or a contractual commitment. The Beauty Nations team may contact applicants for further information and communicate any applicable selection or participation terms separately.</p>
-        <p className="text-amber-100">[TO CONFIRM: final application eligibility, age rules, selection conditions, deadlines and decision-making process.]</p>
       </section>
       <section>
         <h2 className="font-heading text-xl uppercase text-white">3. Grand Final ticket updates</h2>
         <p>Joining the priority ticket-notification list is free. It is a request to receive information when ticket sales become available. It does not reserve a seat, constitute a purchase or guarantee ticket availability. Ticket prices and purchasing conditions are not yet published.</p>
-        <p>When ticket sales are launched, separate purchasing, cancellation and refund terms should be provided before payment is accepted.</p>
+        <p>Any future ticket sales will be subject to separate purchasing, cancellation and refund terms made available before payment is accepted.</p>
+        <p>You can withdraw your consent to ticket-sale notification emails and request removal from the list at any time by emailing <a className="text-gold underline" href="mailto:info.lelapantelic@gmail.com">info.lelapantelic@gmail.com</a>.</p>
       </section>
       <section>
         <h2 className="font-heading text-xl uppercase text-white">4. Website information</h2>
@@ -39,7 +38,8 @@ export default function TermsPage() {
       <section>
         <h2 className="font-heading text-xl uppercase text-white">7. Privacy and contact</h2>
         <p>Read our <a className="text-gold underline" href="/privacy-policy">Privacy Policy</a> for details about personal information. For general enquiries contact <a className="text-gold underline" href="mailto:info.lelapantelic@gmail.com">info.lelapantelic@gmail.com</a>.</p>
-        <p className="text-amber-100">[TO CONFIRM: any appropriate governing-law and dispute resolution terms. Mandatory consumer rights cannot be overridden by website terms.]</p>
+        <p>Nothing in these terms limits any rights you have under applicable law that cannot be excluded or restricted.</p>
+        <p>Last updated: 5 November 2026.</p>
       </section>
     </LegalLayout>
   );
