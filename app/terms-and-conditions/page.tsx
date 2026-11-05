@@ -3,6 +3,7 @@ import LegalLayout from "@/components/LegalLayout";
 
 export const metadata: Metadata = {
   title: "Terms & Conditions | Beauty Nations",
+  robots: { index: false, follow: false },
 };
 
 export default function TermsPage() {
@@ -10,7 +11,7 @@ export default function TermsPage() {
     <LegalLayout title="Terms & Conditions">
       <section>
         <h2 className="font-heading text-xl uppercase text-white">1. About this website</h2>
-        <p>The website https://beauty-nations.com introduces Beauty Nations, an international beauty competition initiative led by Lela Pantelić in Lausanne, Switzerland. Beauty Nations is not currently a registered company. Lela Pantelić operates the website and can be contacted at <a className="text-gold underline" href="mailto:info.lelapantelic@gmail.com">info.lelapantelic@gmail.com</a>.</p>
+        <p>This website introduces Beauty Nations, an international beauty competition initiative led by Lela Pantelić, based in Lausanne, Switzerland. Lela Pantelić operates the website and can be contacted at <a className="text-gold underline" href="mailto:info.lelapantelic@gmail.com">info.lelapantelic@gmail.com</a>.</p>
         <p>The website provides ways to contact the organiser about competitions, national coordination, partnerships and Grand Final ticket-sale notifications. It does not sell tickets or accept payments. These terms cover use of the website and its enquiry and notification forms.</p>
       </section>
       <section>

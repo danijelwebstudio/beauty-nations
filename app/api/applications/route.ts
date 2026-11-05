@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { directors } from "@/data/directors";
+import { confirmedDirectors } from "@/data/directors";
 import { checkRateLimit, opaqueId } from "@/lib/rate-limit";
+import { trustedClientIp } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 
-const CONFIRMED = new Set(directors.filter((d) => d.posterUrl).map((d) => d.countryName));
+const CONFIRMED = new Set(confirmedDirectors.map((d) => d.countryName));
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const REQUIRED: Record<string, string[]> = {
   tickets: ["name", "email", "country"],
@@ -32,8 +33,14 @@ function safeText(value: unknown, max = 200): string {
     : "";
 }
 
-function failure(message: string, status: number) {
-  return NextResponse.json({ message }, { status, headers: { "Cache-Control": "no-store" } });
+function failure(message: string, status: number, retryAfterSeconds?: number) {
+  return NextResponse.json({ message }, {
+    status,
+    headers: {
+      "Cache-Control": "no-store",
+      ...(retryAfterSeconds ? { "Retry-After": String(retryAfterSeconds) } : {}),
+    },
+  });
 }
 
 type TurnstileVerification = {
@@ -53,6 +60,17 @@ async function verifyTurnstile(token: string, expectedAction: string): Promise<"
     return "unavailable";
   }
 
+  // Use configured hosts, never the request Host/Origin header as authority.
+  const hostnames = (process.env.TURNSTILE_ALLOWED_HOSTNAMES || "")
+    .split(",").map((hostname) => hostname.trim().toLowerCase()).filter(Boolean);
+  if (!hostnames.length) {
+    try {
+      const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL;
+      if (configuredUrl) hostnames.push(new URL(configuredUrl).hostname.toLowerCase());
+    } catch { /* Invalid deployment configuration must fail closed. */ }
+  }
+  if (!hostnames.length) return "unavailable";
+
   try {
     const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
       method: "POST",
@@ -64,7 +82,8 @@ async function verifyTurnstile(token: string, expectedAction: string): Promise<"
     if (!response.ok) return "unavailable";
 
     const result: TurnstileVerification = await response.json();
-    if (!result.success || result.action !== expectedAction || !result.hostname) {
+    if (!result.success || result.action !== expectedAction ||
+        typeof result.hostname !== "string" || !hostnames.includes(result.hostname.toLowerCase())) {
       return "invalid";
     }
     return "valid";
@@ -97,6 +116,10 @@ async function deliver(subject: string, data: Record<string, string>, type: stri
     const formId = process.env.FORMSPREE_FORM_ID?.trim();
     if (!formId || !/^[A-Za-z0-9]{6,32}$/.test(formId)) {
       console.error("Beauty Nations forms: FORMSPREE_FORM_ID is missing or invalid");
+      return { ok: false, status: 503 };
+    }
+    if (process.env.DEPLOYMENT_ENV === "production" && formId !== "xqppnpgo") {
+      console.error("Beauty Nations forms: production Formspree destination is not approved");
       return { ok: false, status: 503 };
     }
     const payload = new URLSearchParams({
@@ -150,13 +173,11 @@ async function deliver(subject: string, data: Record<string, string>, type: stri
 }
 
 export async function POST(request: Request) {
-  // Supplemental, best-effort limit. Cloudflare WAF will enforce the edge limit in production.
-  // These proxy headers must be overwritten by a trusted proxy, never trusted from direct client traffic.
-  const clientIp = (request.headers.get("x-real-ip") || request.headers.get("cf-connecting-ip") || "").trim();
-  if (clientIp) {
-    const ipLimit = checkRateLimit(`ip:${opaqueId(clientIp)}`, 5, 10 * 60 * 1000);
-    if (!ipLimit.allowed) return failure("Too many requests. Please try again later.", 429);
-  }
+  // In an unverified deployment all clients share a conservative fallback bucket.
+  // Forged IP headers cannot grant fresh quotas. Configure the trusted proxy before launch.
+  const clientIp = trustedClientIp(request.headers);
+  const ipLimit = checkRateLimit(clientIp ? `ip:${opaqueId(clientIp)}` : "ip:unverified-proxy", 5, 10 * 60 * 1000);
+  if (!ipLimit.allowed) return failure("Too many requests. Please try again later.", 429, ipLimit.retryAfterSeconds);
 
   const size = Number(request.headers.get("content-length") || 0);
   if (size > 12_000) return failure("Request is too large.", 413);
@@ -193,7 +214,7 @@ export async function POST(request: Request) {
   if (verification === "unavailable") return failure("Security verification is temporarily unavailable. Please try again later.", 503);
 
   const emailLimit = checkRateLimit(`email:${opaqueId(data.email)}`, 3, 60 * 60 * 1000);
-  if (!emailLimit.allowed) return failure("Too many submissions for this email. Please try again later.", 429);
+  if (!emailLimit.allowed) return failure("Too many submissions for this email. Please try again later.", 429, emailLimit.retryAfterSeconds);
 
   try {
     const result = await deliver(subject, data, type);

@@ -52,7 +52,15 @@ export const directors: NationalDirector[] = [
     instagramUrl: "https://www.instagram.com/beautynations.bih",
   },
   { countryName: "Montenegro", countryCode: "ME" },
-  { countryName: "North Macedonia", countryCode: "MK" },
+  {
+    countryName: "North Macedonia",
+    countryCode: "MK",
+    directorName: "Marija Stojanovska",
+    posterUrl: "/directors/posters/north-macedonia.jpg",
+    displayUrl: "/directors/cards/north-macedonia.webp",
+    posterHeight: 1280,
+    // Official Season 2027 announcement; no Instagram profile supplied.
+  },
   { countryName: "Greece", countryCode: "GR" },
   { countryName: "Italy", countryCode: "IT" },
   { countryName: "Spain", countryCode: "ES" },
@@ -92,3 +100,9 @@ export const directors: NationalDirector[] = [
   { countryName: "United Kingdom", countryCode: "GB" },
   { countryName: "United States", countryCode: "US" },
 ];
+
+export const confirmedDirectors = directors.filter(
+  (director) => director.directorName && director.posterUrl && director.displayUrl,
+);
+
+export const confirmedCountryCount = confirmedDirectors.length;

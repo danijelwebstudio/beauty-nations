@@ -3,6 +3,7 @@ import LegalLayout from "@/components/LegalLayout";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Beauty Nations",
+  robots: { index: false, follow: false },
 };
 
 export default function PrivacyPolicyPage() {
@@ -10,7 +11,7 @@ export default function PrivacyPolicyPage() {
     <LegalLayout title="Privacy Policy">
       <section>
         <h2 className="font-heading text-xl uppercase text-white">1. Who is responsible for your data?</h2>
-        <p>Beauty Nations is an international beauty competition initiative led by Lela Pantelić in Lausanne, Switzerland. Beauty Nations is not currently a registered company. Lela Pantelić is responsible for the personal data processed through https://beauty-nations.com. For privacy enquiries, contact <a className="text-gold underline" href="mailto:info.lelapantelic@gmail.com">info.lelapantelic@gmail.com</a>.</p>
+        <p>Beauty Nations is an international beauty competition initiative led by Lela Pantelić, based in Lausanne, Switzerland. Lela Pantelić is responsible for the personal data processed through this website. For questions regarding the processing of personal data, please contact <a className="text-gold underline" href="mailto:info.lelapantelic@gmail.com">info.lelapantelic@gmail.com</a>.</p>
       </section>
       <section>
         <h2 className="font-heading text-xl uppercase text-white">2. What information do we collect?</h2>
@@ -25,7 +26,8 @@ export default function PrivacyPolicyPage() {
       </section>
       <section>
         <h2 className="font-heading text-xl uppercase text-white">4. Who helps us process data?</h2>
-        <p>The website is hosted on Hetzner infrastructure and deployed and managed using Coolify. Formspree processes form submissions. Cloudflare Turnstile checks for automated abuse, and Cloudflare WAF helps protect the website from malicious traffic. These services process submission or technical data as needed for their respective functions. Email providers also process messages when enquiries and notifications are delivered or answered.</p>
+        <p>Formspree processes form submissions sent by this website. Cloudflare Turnstile processes technical browser and request information to check for automated abuse. Email providers process messages when enquiries and ticket-sale notifications are delivered or answered. Hosting providers process technical request data needed to serve and secure the website.</p>
+        <p>The production hosting provider, processing locations, provider retention settings and any applicable international transfer safeguards must be confirmed before this draft is approved.</p>
       </section>
       <section>
         <h2 className="font-heading text-xl uppercase text-white">5. How long do we keep information?</h2>
@@ -37,7 +39,7 @@ export default function PrivacyPolicyPage() {
       </section>
       <section>
         <h2 className="font-heading text-xl uppercase text-white">7. Cookies, analytics and security</h2>
-        <p>Cloudflare Turnstile and WAF may process technical request and browser information to distinguish automated activity from genuine visitors and protect the website. Our application also uses hashed IP address and email identifiers to limit repeated form submissions.</p>
+        <p>Cloudflare Turnstile processes technical request and browser information to distinguish automated activity from genuine visitors. Our application temporarily uses keyed identifiers derived from email addresses and, when a trusted proxy is configured, IP addresses to limit repeated submissions. The application rate-limit windows are ten minutes for IP addresses and one hour for email addresses; these are separate from provider and email retention periods.</p>
         <p>If optional analytics or marketing technologies are enabled, their purpose, data handling and any required consent choices must be described before activation.</p>
       </section>
       <section>

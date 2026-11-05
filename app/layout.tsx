@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Anton, Oswald, Outfit } from "next/font/google";
 import "./globals.css";
-import { siteUrl } from "@/lib/site-url";
+import { siteUrl, isPreRelease } from "@/lib/site-url";
 import LegalFooter from "@/components/LegalFooter";
-import { GoogleAnalytics } from '@next/third-parties/google';
 
 // Konfiguracija fontova
 const anton = Anton({
@@ -27,14 +26,12 @@ const outfit = Outfit({
 const siteTitle = "Beauty Nations | One World. One Beauty Stage.";
 const siteDescription =
   "An international competition combining nail artistry, makeup, costume and photography through one creative theme. Grand Final: 18 September 2027, Zagreb.";
-const isVercelPreview = process.env.VERCEL_ENV === "preview";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: siteTitle,
   description: siteDescription,
-  // Keep Vercel Preview deployments out of search results.
-  robots: isVercelPreview ? { index: false, follow: false } : undefined,
+  robots: isPreRelease ? { index: false, follow: false } : undefined,
   openGraph: {
     title: siteTitle,
     description: siteDescription,
@@ -42,11 +39,13 @@ export const metadata: Metadata = {
     siteName: "Beauty Nations",
     locale: "en_US",
     type: "website",
+    images: [{ url: "/BeautyNationLogo.webp", alt: "Beauty Nations — One World. One Beauty Stage." }],
   },
   twitter: {
     card: "summary",
     title: siteTitle,
     description: siteDescription,
+    images: ["/BeautyNationLogo.webp"],
   },
   icons: {
     icon: "/favicon-16x16.png",
@@ -66,9 +65,7 @@ export default function RootLayout({
       <body className="bg-black font-body text-white antialiased">
         {children}
         <LegalFooter />
-        {process.env.NEXT_PUBLIC_GA_ID ? (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
-        ) : null}
+        {/* Analytics require a separate privacy and consent review before activation. */}
       </body>
     </html>
   );

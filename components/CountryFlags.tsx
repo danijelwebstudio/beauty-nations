@@ -2,17 +2,16 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { motion } from "framer-motion";
+import { confirmedDirectors } from "@/data/directors";
 
-// Only the seven countries currently confirmed by Beauty Nations.
-const countries = [
-  { name: "Switzerland", code: "ch" },
-  { name: "Germany", code: "de" },
-  { name: "Croatia", code: "hr" },
-  { name: "Serbia", code: "rs" },
-  { name: "Bosnia & Herzegovina", code: "ba" },
-  { name: "Slovenia", code: "si" },
-  { name: "Bulgaria", code: "bg" },
-];
+// Preserve the approved ordering; all content comes from confirmed records.
+const flagOrder = ["CH", "DE", "HR", "RS", "BA", "SI", "BG", "MK"];
+const countries = [...confirmedDirectors]
+  .sort((a, b) => {
+    const rank = (code: string) => flagOrder.includes(code) ? flagOrder.indexOf(code) : flagOrder.length;
+    return rank(a.countryCode) - rank(b.countryCode);
+  })
+  .map((director) => ({ name: director.countryName, code: director.countryCode.toLowerCase() }));
 
 export default function CountryFlags() {
   return (
@@ -38,7 +37,7 @@ export default function CountryFlags() {
 
         {/*
           Flex items are sized to fit 2/3/4 per row (mobile/tablet/desktop).
-          Centering the wrapped row gives a balanced 4 + 3 desktop layout.
+          Centering keeps wrapped rows balanced as countries are confirmed.
         */}
         <div className="mx-auto flex max-w-3xl flex-wrap justify-center gap-x-6 gap-y-5 sm:gap-y-6 lg:max-w-5xl lg:gap-y-7">
           {countries.map((country, index) => (

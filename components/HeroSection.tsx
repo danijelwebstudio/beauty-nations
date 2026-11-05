@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { confirmedCountryCount } from "@/data/directors";
 
 const buttons = [
   { label: "COMPETE", href: "#compete" },
@@ -38,7 +39,7 @@ export default function HeroSection() {
           ))}
         </motion.div>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.7 }} className="mt-9 hidden w-full max-w-2xl justify-center gap-8 text-left md:flex">
-          <div className="border-l border-gold/40 pl-4"><strong className="font-heading text-base uppercase text-white">7 Nations</strong><p className="font-body text-xs text-white/60">Represented countries</p></div>
+          <div className="border-l border-gold/40 pl-4"><strong className="font-heading text-base uppercase text-white">{confirmedCountryCount} Nations</strong><p className="font-body text-xs text-white/60">Represented countries</p></div>
           <div className="border-l border-gold/40 pl-4"><strong className="font-heading text-base uppercase text-white">1 Global Stage</strong><p className="font-body text-xs text-white/60">An international final</p></div>
           <div className="border-l border-gold/40 pl-4"><strong className="font-heading text-base uppercase text-white">Roots</strong><p className="font-body text-xs text-white/60">2027 creative theme</p></div>
         </motion.div>

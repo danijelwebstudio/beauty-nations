@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { Instagram } from "lucide-react";
-import { directors } from "@/data/directors";
+import { confirmedDirectors } from "@/data/directors";
 import LeadForm from "./LeadForm";
 
-const confirmed = directors.filter((director) => director.posterUrl).sort((a, b) => a.countryName.localeCompare(b.countryName));
+const confirmed = [...confirmedDirectors].sort((a, b) => a.countryName.localeCompare(b.countryName));
 
 export default function CompetitionSection() {
   const [country, setCountry] = useState("");

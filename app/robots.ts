@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
-import { siteUrl } from "@/lib/site-url";
+import { siteUrl, isPreRelease } from "@/lib/site-url";
 
 export default function robots(): MetadataRoute.Robots {
-  if (process.env.VERCEL_ENV === "preview") {
+  if (isPreRelease) {
     return { rules: { userAgent: "*", disallow: "/" } };
   }
 
